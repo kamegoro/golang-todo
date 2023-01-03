@@ -30,7 +30,7 @@ func (t *todoRepository) AllGet() ([]domain.Todo, error) {
 func (t *todoRepository) StatusUpdate(id int) error {
 	r, ok := t.m.LoadAndDelete(id)
 	if !ok {
-		return errors.New("Fail Load Data")
+		return errors.New("fail load data")
 	}
 
 	newTodo := r.(domain.Todo)
