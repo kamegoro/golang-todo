@@ -13,7 +13,6 @@ type TodoUsecase interface {
 	Delete(id int) error
 }
 
-
 type TodoRepository interface {
 	AllGet() ([]Todo, error)
 	StatusUpdate(id int) error
