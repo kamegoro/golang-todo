@@ -3,17 +3,26 @@ package main
 import (
 	"log"
 
+	"example.com/mod/delivery"
+	"example.com/mod/repository"
+	"example.com/mod/usecase"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-func helloworld(c *fiber.Ctx) error {
-	return c.SendString("Hello, World!")
-}
-
 func main() {
-	app := fiber.New()
+	tr := repository.NewSyncMapTodoRepository()
+	tu := usecase.NewTodoUsecase(tr)
+	c := fiber.New()
 
-	app.Get("/", helloworld)
+	c.Use(cors.New(cors.Config {
+		AllowCredentials: true,
+	}))
 
-	log.Fatal(app.Listen("localhost:8080"))
+	delivery.NewTodoAllGetHandler(c, tu)
+	delivery.NewTodoDeleteHandler(c, tu)
+	delivery.NewTodoStatusUpdateHandler(c, tu)
+	delivery.NewTodoStoreHandler(c, tu)
+
+	log.Fatal(c.Listen("localhost:8080"))
 }
