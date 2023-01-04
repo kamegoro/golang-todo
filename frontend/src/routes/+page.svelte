@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { TodoRepository } from '../core/domains/repository/TodoRepository';
-	import TodoCard from '../component/TodoCard/index.svelte';
-	import { Input, Button, Spinner, Alert } from 'flowbite-svelte';
+	import { Input, Button, Spinner, Alert, Tabs, TabItem, Checkbox } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import type { Todo } from 'src/core/domains/models/todo';
 
@@ -9,8 +8,13 @@
 	let text: string = '';
 	let isLoading: boolean = false;
 
+	let unCompletedTodos: Todo[] = [];
+	let completedTodos: Todo[] = [];
+
 	onMount(async () => {
 		todos = await TodoRepository.getAll();
+		unCompletedTodos = todos.filter(v => !v.completed);
+		completedTodos = todos.filter(v => v.completed)
 	});
 
 	const addTodo = async () => {
@@ -21,13 +25,16 @@
 			completed: false
 		})
 
+		todos = await TodoRepository.getAll()
+		text = "";
 		isLoading = false
 	};
+
 </script>
 
 <section>
 	<h2 class="mb-8 font-bold text-4xl">TODO</h2>
-	<form class="w-full mb-8">
+	<form class="w-full mb-2">
 		<Input placeholder="テキストを入力してください" size="lg" bind:value={text}>
 			<Button slot="right" size="sm" type="submit" disabled={!text} on:click={async () => await addTodo()}>
 				{#if isLoading}
@@ -58,7 +65,24 @@
 			<span class="font-medium">TODOリストは0件です。</span>
 		</Alert>
 	{:else}
-		<TodoCard />
+		<Tabs style="underline" class="mb-6 w-96">
+			<TabItem open title="TODOリスト">
+				{#each unCompletedTodos as todo}
+					<div class="flex items-center w-full px-6 border-r-8 bg-slate-200 p-2 mb-2">
+						<Checkbox checked={todo.completed}/>
+						<p class="ml-2">{todo.text}</p>
+					</div>
+				{/each}
+			</TabItem>
+			<TabItem title="完了リスト">
+				{#each completedTodos as todo}
+					<div class="flex items-center w-full px-6 border-r-2 bg-slate-400 p-2 mb-2">
+						<Checkbox checked={false} disabled />
+						<p class="ml-2">{todo.text}</p>
+					</div>
+				{/each}
+			</TabItem>
+		</Tabs>
 	{/if}
 </section>
 
