@@ -9,8 +9,8 @@ export class TodoRepository {
 		return todos || [];
 	}
 
-	static async addTodo(todo: Omit<Todo, 'id'>): Promise<void> {
-		await fetch(baseURL + 'todo/store', {
+	static async addTodo(todo: Todo): Promise<void> {
+		await fetch(baseURL + '/todo/store', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ export class TodoRepository {
 	}
 
 	static async deleteTodo(id: Pick<Todo, 'id'>): Promise<void> {
-		await fetch(baseURL + 'todo/delete', {
+		await fetch(baseURL + '/todo/delete', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
