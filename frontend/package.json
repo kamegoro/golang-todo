@@ -13,7 +13,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@fontsource/fira-mono": "^5.0.4",
+		"@fontsource/fira-mono": "^5.0.5",
 		"@neoconfetti/svelte": "^1.0.0",
 		"@playwright/test": "^1.35.1",
 		"@popperjs/core": "^2.11.8",
