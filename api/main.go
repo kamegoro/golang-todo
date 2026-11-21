@@ -15,7 +15,10 @@ func main() {
 	tu := usecase.NewTodoUsecase(tr)
 	c := fiber.New()
 
-	c.Use(cors.New(cors.Config {
+	// fiber >= 2.52 rejects AllowCredentials with a wildcard origin,
+	// so list the SvelteKit dev (5173) and preview (4173) origins explicitly.
+	c.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:5173, http://localhost:4173",
 		AllowCredentials: true,
 	}))
 
