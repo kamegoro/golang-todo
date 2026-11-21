@@ -1,6 +1,9 @@
-<script>
-	import '../app.postcss';
+<script lang="ts">
+	import type { Snippet } from 'svelte';
+	import '../app.css';
 	import './styles.css';
+
+	let { children }: { children: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -10,11 +13,11 @@
 
 <div class="app">
 	<main>
-		<slot />
+		{@render children()}
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to learn SvelteKit</p>
 	</footer>
 </div>
 
